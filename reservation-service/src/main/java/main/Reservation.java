@@ -20,13 +20,13 @@ public class Reservation {
     private TimePeriod timePeriod;
     private Status status;
 
-    public Reservation(String id, String userId, String itemId, int amount, TimePeriod timePeriod, Status status) {
+    public Reservation(String id, String userId, String itemId, int amount, TimePeriod timePeriod) {
         this.id = id;
         this.userId = userId;
         this.itemId = itemId;
         this.amount = amount;
         this.timePeriod = timePeriod;
-        this.status = status;
+        this.status = Status.WAITING;
     }
 
     public String getId() {
