@@ -1,12 +1,12 @@
-# Queue Service
-Queue Service project of Service-Oriented Programming Class, Information Technology, King Mongkut's Institute of Technolgoy Ladkrabang.
+# Reservation Service
+Reservation Service project of Service-Oriented Programming Class, Information Technology, King Mongkut's Institute of Technolgoy Ladkrabang.
 
 <img src="https://www.lavi.com/wp-content/uploads/2013/07/Why-We-Wont-Wait-blog.jpg" width="100%">
 
-## What is Queue Service ?
-Queue Service is a service that would grant you an ability to queue or make a reservation for you on a specific shop. Queue ahead, then receive goods or service on time. No need to waste time waiting at the spot.
+## What is Reservation Service ?
+Reservation Service is a service that would grant you an ability to queue or make a reservation for you on a specific shop. Queue ahead, then receive goods or service on time. No need to waste time waiting at the spot.
 
-## Why Queue Service ?
+## Why Reservation Service ?
 Have you ever went to your favorite restaurant, barber shop or beauty salon and wait so long? When you thought 20 minutes of time is enough, but it results in 2 hours, which mostly is wasted on waiting. What if you can just queue or make a reservation ahead, then receive goods or service on time. Save more time to do other things than waiting. In addition, there is no need worrying in the goods out of stock.
 
 ## Features
@@ -29,7 +29,7 @@ As for shop owners, managers and staffs, they can set up the shop in our service
 Shops are not able to run if there is no product or service. Shop owners, managers and staffs are able to manage this list, including add, view, update and delete items. All of them are basic operations of list management.
 
 ### Manage Queues and Reservations of Customers
-After the shop is fully set up, customers can now use the queue service of your shop. After a customer chose a certain product or service to make a queue or reservation, you will be able to see the one customer made. The rest is up to you how you would like to manage these queues and reservations.
+After the shop is fully set up, customers can now use the Reservation Service of your shop. After a customer chose a certain product or service to make a queue or reservation, you will be able to see the one customer made. The rest is up to you how you would like to manage these queues and reservations.
 
 ### Advanced Shop Settings
 For more flexibility, shop owners, managers and staffs are able to configure these settings. These settings include the following:
