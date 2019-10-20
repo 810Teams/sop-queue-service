@@ -1,4 +1,4 @@
-package main;
+package core;
 
 import exceptions.InvalidStatusFlowException;
 
@@ -13,24 +13,18 @@ public class Reservation {
         CANCELLED_BY_SHOP   // Bad Case:  Shop owner cancelled customer's reservation (for some reasons).
     }
 
-    private String id;
     private String userId;
     private String itemId;
     private int amount;
     private TimePeriod timePeriod;
     private Status status;
 
-    public Reservation(String id, String userId, String itemId, int amount, TimePeriod timePeriod) {
-        this.id = id;
+    public Reservation(String userId, String itemId, int amount, TimePeriod timePeriod) {
         this.userId = userId;
         this.itemId = itemId;
         this.amount = amount;
         this.timePeriod = timePeriod;
         this.status = Status.WAITING;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getUserId() {
