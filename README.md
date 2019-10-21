@@ -1,6 +1,6 @@
 ## Product service
 ### Shop
-```json
+```javascript
     GET /shops --> Get all shops
     GET /shops/{shop_id} --> Get shop
     POST /shops --> Create a shop
@@ -16,7 +16,7 @@
     DELETE /shops/{shop_id} --> Delete a shop
 ``` 
 ### Item
-```json
+```javascript
     GET /shops/{shop_id}/items 
     --> Get all items in shops
     GET /shops/{shop_id}/items/{item_id} 
