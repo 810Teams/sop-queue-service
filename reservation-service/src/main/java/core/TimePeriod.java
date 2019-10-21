@@ -1,7 +1,6 @@
 package core;
 
 import exceptions.InvalidTimePeriodException;
-import jdk.vm.ci.meta.Local;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -10,6 +9,9 @@ import java.time.format.DateTimeFormatter;
 public class TimePeriod {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+
+    public TimePeriod() {
+    }
 
     public TimePeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.startDateTime = startDateTime;

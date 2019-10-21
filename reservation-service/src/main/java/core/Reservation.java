@@ -19,6 +19,9 @@ public class Reservation {
     private TimePeriod timePeriod;
     private Status status;
 
+    public Reservation() {
+    }
+
     public Reservation(String userId, String itemId, int amount, TimePeriod timePeriod) {
         this.userId = userId;
         this.itemId = itemId;
