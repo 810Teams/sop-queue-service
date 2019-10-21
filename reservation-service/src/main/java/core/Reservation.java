@@ -5,29 +5,28 @@ import exceptions.InvalidStatusFlowException;
 import java.time.LocalDateTime;
 
 public class Reservation {
-    enum Status {
-        WAITING,    // Good Case: Customer before receiving reserved goods or services.
-        SUCCESS,    // Good Case: Customer received goods or services successfully.
-        MISSED,     // Bad Case:  Customer did not show up on time.
-        CANCELLED_BY_USER,  // Bad Case:  Customer cancelled the reservation.
-        CANCELLED_BY_SHOP   // Bad Case:  Shop owner cancelled customer's reservation (for some reasons).
-    }
-
     private String userId;
     private String itemId;
     private int amount;
     private TimePeriod timePeriod;
-    private Status status;
+    private ReservationStatus status;
 
     public Reservation() {
+        // Constructor: Empty constructor
+    }
+
+    public Reservation(String userId, String itemId, TimePeriod timePeriod) {
+        // Constructor: Single amount
+        this(userId, itemId, 1, timePeriod);
     }
 
     public Reservation(String userId, String itemId, int amount, TimePeriod timePeriod) {
+        // Constructor: Multiple amount
         this.userId = userId;
         this.itemId = itemId;
         this.amount = amount;
         this.timePeriod = timePeriod;
-        this.status = Status.WAITING;
+        this.status = ReservationStatus.WAITING;
     }
 
     public String getUserId() {
@@ -46,59 +45,43 @@ public class Reservation {
         return timePeriod;
     }
 
-    public Status getStatus() {
+    public ReservationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) throws InvalidStatusFlowException {
-        if (status == this.status) {
-            throw new InvalidStatusFlowException("Unchanged status flow.");
-        } else if (status == Status.WAITING) {
-            this.setStatusWaiting();
-        } else if (status == Status.SUCCESS) {
-            this.setStatusSuccess();
-        } else if (status == Status.CANCELLED_BY_USER) {
-            this.setStatusCancelledByUser();
-        } else if (status == Status.MISSED) {
-            this.setStatusMissed();
-        } else if (status == Status.CANCELLED_BY_SHOP) {
-            this.setStatusCancelledByShop();
-        }
-    }
-
-    private void setStatusWaiting() throws InvalidStatusFlowException {
-        throw new InvalidStatusFlowException("Unable to revert status flow");
-    }
-
-    private void setStatusSuccess() throws InvalidStatusFlowException {
-        if (this.status == Status.WAITING) {
-            this.status = Status.SUCCESS;
-        } else {
+    public void checkSuccess() throws InvalidStatusFlowException {
+        // Instance Method: Shop & user checks reservation as success
+        if (this.status != ReservationStatus.WAITING) {
             throw new InvalidStatusFlowException("Invalid status flow.");
         }
+        this.status = ReservationStatus.SUCCESS;
     }
 
-    private void setStatusMissed() throws InvalidStatusFlowException {
-        if (this.status == Status.WAITING && LocalDateTime.now().compareTo(this.timePeriod.getEndDateTime()) > 0) {
-            this.status = Status.MISSED;
-        } else {
+    public void checkMissed() throws InvalidStatusFlowException {
+        // Instance Method: Shop checks reservation as missed
+        if (this.status != ReservationStatus.WAITING) {
             throw new InvalidStatusFlowException("Invalid status flow.");
+        } else if (LocalDateTime.now().compareTo(this.timePeriod.getEndDateTime()) < 0) {
+            throw new InvalidStatusFlowException("Unable to check as missed before the reserved time.");
         }
+        this.status = ReservationStatus.MISSED;
     }
 
-    private void setStatusCancelledByUser() throws InvalidStatusFlowException {
-        if (this.status == Status.WAITING && LocalDateTime.now().compareTo(this.timePeriod.getStartDateTime()) < 0) {
-            this.status = Status.CANCELLED_BY_USER;
-        } else {
+    public void cancelByUser() throws InvalidStatusFlowException {
+        // Instance Method: User cancels reservation
+        if (this.status != ReservationStatus.WAITING) {
             throw new InvalidStatusFlowException("Invalid status flow.");
+        } else if (LocalDateTime.now().compareTo(this.timePeriod.getStartDateTime()) >= 0) {
+            throw new InvalidStatusFlowException("Unable to cancel after the reserved time.");
         }
+        this.status = ReservationStatus.CANCELLED_BY_USER;
     }
 
-    private void setStatusCancelledByShop() throws InvalidStatusFlowException {
-        if (this.status == Status.WAITING) {
-            this.status = Status.CANCELLED_BY_SHOP;
-        } else {
+    public void cancelByShop() throws InvalidStatusFlowException {
+        // Instance Method: Shop cancels reservation
+        if (this.status != ReservationStatus.WAITING) {
             throw new InvalidStatusFlowException("Invalid status flow.");
         }
+        this.status = ReservationStatus.CANCELLED_BY_SHOP;
     }
 }
