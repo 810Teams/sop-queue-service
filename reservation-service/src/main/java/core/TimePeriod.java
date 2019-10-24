@@ -1,13 +1,19 @@
 package core;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import exceptions.InvalidTimePeriodException;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class TimePeriod {
+public class TimePeriod implements Serializable {
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime startDateTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endDateTime;
 
     public TimePeriod() {
@@ -41,7 +47,8 @@ public class TimePeriod {
     }
 
     private LocalDateTime stringToLocalDateTime(String time) {
-        return LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.parse(time, formatter);
     }
 
     private void checkException() throws InvalidTimePeriodException {

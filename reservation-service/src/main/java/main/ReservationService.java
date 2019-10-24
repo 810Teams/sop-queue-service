@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import token.AccountTypeToken;
+import token.ItemToken;
+import token.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +48,9 @@ public class ReservationService {
         // Operation: Creates a reservation from POST request.
         // Returns: Reservation created
 
-        // TODO: Implements reservation creation
-
         reservationList.add(reservation);
 
-        return new ResponseEntity<Reservation>(new Reservation(), HttpStatus.OK);
+        return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/reservation/{id}", method = RequestMethod.GET)
@@ -71,17 +72,25 @@ public class ReservationService {
         return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/list/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/list/{userId}", method = RequestMethod.POST)
     public ResponseEntity<List<Reservation>> list(
             @PathVariable String userId
-    ) {
+            ) {
         // Type: GET
         // Operation: Get all reservations of a certain user.
-        // Returns: Reservation list of a certain user
+        // Returns: Reservation list of a cart
 
-        // TODO: Implements reservation list
+        ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
 
-        return new ResponseEntity<List<Reservation>>(this.reservationList, HttpStatus.OK);
+        for (Reservation r : this.reservationList) {
+            if (r.getUserId().equals(userId)) {
+                reservationList.add(r);
+            }
+        }
+
+        // TODO: Implements shop owner received reservation list
+
+        return new ResponseEntity<List<Reservation>>(reservationList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/reservation/{id}/cancel", method = RequestMethod.POST)
