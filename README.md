@@ -46,4 +46,8 @@
       "price": "Number"
     }
 ]
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> ad8d60f8451a8673c5dcb3b4e9fb49b1b1b4a2ab
