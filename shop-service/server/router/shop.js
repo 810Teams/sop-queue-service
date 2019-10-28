@@ -113,7 +113,10 @@ router.patch("/shops/:id", async (req, res) => {
 router.delete("/shops/:id", async (req, res) => {
   try {
     const shop = await Shop.findByIdAndDelete(req.params.id);
-    if (!shop) {
+    const response = await axios.delete(url + "/products/" + req.params.id);
+    const { data } = response;
+
+    if (!shop || !data) {
       return res.status(404).send();
     }
     res.send(shop);
