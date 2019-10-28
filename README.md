@@ -2,10 +2,10 @@
 
 ## Shop-service
 
-- `POST   /shops`
-- `GET    /shops`
-- `GET    /shops/:shop_id`
-- `PATCH  /shops/:shop_id`
+- `POST /shops`
+- `GET /shops`
+- `GET /shops/:shop_id`
+- `PATCH /shops/:shop_id`
 - `DELETE /shops/:shop_id`
 
 ### Create shop
@@ -29,11 +29,14 @@
 
 ## Product-service
 
-- `POST   /products`
-- `GET    /products`
-- `GET    /products/:shop_id`
-- `PATCH  /shops/:shop_id`
-- `DELETE /shops/:shop_id`
+- `POST /products`
+- `GET /products`
+- `GET /products/:shop_id`
+- `DELETE /products/:shop_id`
+- `POST /products/:shop_id/items/`
+- `GET /products/:shop_id/items/`
+- `GET /products/:shop_id/items/:item_id`
+- `DELETE /products/:shop_id/items/:item_id`
 
 ### Change items or Create items
 ```json
