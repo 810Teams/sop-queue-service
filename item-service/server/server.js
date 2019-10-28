@@ -2,13 +2,11 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT | 8080
 require('./database/db')
-const shopRouter = require('./router/shop')
-const itemRouter = require('./router/item')
+const productRouter = require('./router/product')
 
 // Router
 app.use(express.json());
-app.use(shopRouter)
-app.use(itemRouter)
+app.use(productRouter)
 
 // Create server
 app.listen(port, ()=>{
