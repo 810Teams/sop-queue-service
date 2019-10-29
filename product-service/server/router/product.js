@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../model/product");
 
+// Document
+router.get("/", (req, res) => {
+  res.send({ document: "https://github.com/810Teams/sop-reservation-service" });
+});
+
 // Product
 // Create Product
 router.post("/products", async (req, res) => {
