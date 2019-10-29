@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = process.env.PORT | 8081
+const port = process.env.PORT | 8080
 require('./database/db')
 const productRouter = require('./router/product')
 
