@@ -1,47 +1,36 @@
-package main;
+package com.teams810.reservation.api.controllers;
 
-import core.Reservation;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.teams810.reservation.api.entities.Reservation;
+import com.teams810.reservation.api.entities.TimePeriod;
+import com.teams810.reservation.api.exceptions.InvalidStatusFlowException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import token.AccountTypeToken;
-import token.ItemToken;
-import token.Token;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-@SpringBootApplication
 @RestController
-public class ReservationService {
-    private ArrayList<Reservation> reservationList;
-
-    public static void main(String[] args) {
-        SpringApplication.run(ReservationService.class, args);
-    }
-
-    public ReservationService() {
-        reservationList = new ArrayList<Reservation>();
-    }
-
-    public ReservationService(ArrayList<Reservation> reservationList) {
-        this.reservationList = reservationList;
-    }
+public class ReservationController {
+    private List<Reservation> reservationList = new ArrayList<Reservation>(
+            Arrays.asList(
+                    new Reservation("1", "810teams", "chicken_rice", new TimePeriod("2019-11-06 12:00", "2019-11-06 12:15")),
+                    new Reservation("2", "810teams", "ramen", new TimePeriod("2019-11-07 12:00", "2019-11-07 12:15"))
+            )
+    );
 
     @RequestMapping(value = "/")
     public String index() {
         // Type: -
-        // Operation: Shows service welcome text.
+        // Operation: Shows com.teams810.reservation.api.service welcome text.
         // Returns: Welcome text as a string
 
         return "Reservation Service Index";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<Reservation> create(
+    public ResponseEntity<Reservation> newReservation(
             @RequestBody Reservation reservation
     ) {
         // Type: CREATE
@@ -53,8 +42,17 @@ public class ReservationService {
         return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/reservation", method = RequestMethod.GET)
+    public ResponseEntity<List<Reservation>> getAllReservation() {
+        // Type: GET
+        // Operation: Get all reservations
+        // Returns: All reservations
+
+        return new ResponseEntity<List<Reservation>>(this.reservationList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/reservation/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Reservation> get(
+    public ResponseEntity<Reservation> getReservation(
             @PathVariable String id
     ) {
         // Type: GET
@@ -72,29 +70,29 @@ public class ReservationService {
         return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/list/{userId}", method = RequestMethod.POST)
-    public ResponseEntity<List<Reservation>> list(
+    @RequestMapping(value = "/user/{userId}/reservation", method = RequestMethod.GET)
+    public ResponseEntity<List<Reservation>> userReservation(
             @PathVariable String userId
-            ) {
+    ) {
         // Type: GET
         // Operation: Get all reservations of a certain user.
         // Returns: Reservation list of a cart
 
-        ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
+        ArrayList<Reservation> myReservationList = new ArrayList<Reservation>();
 
         for (Reservation r : this.reservationList) {
             if (r.getUserId().equals(userId)) {
-                reservationList.add(r);
+                myReservationList.add(r);
             }
         }
 
-        // TODO: Implements shop owner received reservation list
-
-        return new ResponseEntity<List<Reservation>>(reservationList, HttpStatus.OK);
+        return new ResponseEntity<List<Reservation>>(myReservationList, HttpStatus.OK);
     }
 
+    // TODO: Implements shop reservation list
+
     @RequestMapping(value = "/reservation/{id}/cancel", method = RequestMethod.POST)
-    public ResponseEntity<Reservation> cancel(
+    public ResponseEntity<Reservation> cancelReservation(
             @PathVariable String id
     ) {
         // Type: DELETE
@@ -106,10 +104,21 @@ public class ReservationService {
         Reservation reservation = null;
 
         for (Reservation r : this.reservationList) {
-            if (r.getItemId().equals(id)) {
+            if (r.getId().equals(id)) {
                 reservation = r;
             }
         }
+
+        try {
+            reservation.cancelByUser();
+        } catch (InvalidStatusFlowException ex) {
+            ex.printStackTrace();
+        } catch (NullPointerException ex) {
+            return null;
+        }
+
+        // TODO: Implements cancel by shop
+
 
         return new ResponseEntity<Reservation>(new Reservation(), HttpStatus.OK);
     }

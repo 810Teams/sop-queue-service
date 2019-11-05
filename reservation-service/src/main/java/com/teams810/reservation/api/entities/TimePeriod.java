@@ -1,8 +1,7 @@
-package core;
+package com.teams810.reservation.api.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import exceptions.InvalidTimePeriodException;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.teams810.reservation.api.exceptions.InvalidTimePeriodException;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -52,21 +51,21 @@ public class TimePeriod implements Serializable {
     }
 
     private void checkException() throws InvalidTimePeriodException {
-        // Private Instance Method: Check for exceptions using current start and end date time attribute value
+        // Private Instance Method: Check for com.teams810.reservation.api.exceptions using current start and end date time attribute value
         if (this.startDateTime.compareTo(this.endDateTime) >= 0) {
             throw new InvalidTimePeriodException("Start datetime must be before end datetime.");
         }
     }
 
     private void checkException(LocalDateTime startDateTime, LocalDateTime endDateTime) throws InvalidTimePeriodException {
-        // Private Instance Method: Check for exceptions using time in LocalDateTime format
+        // Private Instance Method: Check for com.teams810.reservation.api.exceptions using time in LocalDateTime format
         if (startDateTime.compareTo(endDateTime) >= 0) {
             throw new InvalidTimePeriodException("Start datetime must be before end datetime.");
         }
     }
 
     private void checkException(String startDateTimeString, String endDateTimeString) throws InvalidTimePeriodException {
-        // Private Instance Method: Check for exceptions using time in String format
+        // Private Instance Method: Check for com.teams810.reservation.api.exceptions using time in String format
         LocalDateTime startDateTime = this.stringToLocalDateTime(startDateTimeString);
         LocalDateTime endDateTime = this.stringToLocalDateTime(endDateTimeString);
 
