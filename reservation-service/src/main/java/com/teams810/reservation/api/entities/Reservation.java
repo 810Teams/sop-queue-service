@@ -2,11 +2,17 @@ package com.teams810.reservation.api.entities;
 
 import com.teams810.reservation.api.exceptions.InvalidStatusFlowException;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
+@Entity
 public class Reservation {
-
-    private String id;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
     private String userId;
     private String itemId;
     private int amount;
@@ -15,27 +21,28 @@ public class Reservation {
     private String message;
 
     public Reservation() {
-        // Constructor: Empty constructor
+        // Constructor: Default constructor
+        this.status = ReservationStatus.WAITING;
+        this.message = "";
     }
 
-    public Reservation(String id, String userId, String itemId, TimePeriod timePeriod) {
+    public Reservation(String userId, String itemId, TimePeriod timePeriod) {
         // Constructor: Single amount without message
-        this(id, userId, itemId, 1, timePeriod, "");
+        this(userId, itemId, timePeriod, "");
     }
 
-    public Reservation(String id, String userId, String itemId, TimePeriod timePeriod, String message) {
+    public Reservation(String userId, String itemId, TimePeriod timePeriod, String message) {
         // Constructor: Single amount with message
-        this(id, userId, itemId, 1, timePeriod, message);
+        this(userId, itemId, 1, timePeriod, message);
     }
 
-    public Reservation(String id, String userId, String itemId, int amount, TimePeriod timePeriod) {
+    public Reservation(String userId, String itemId, int amount, TimePeriod timePeriod) {
         // Constructor: Multiple amount without message
-        this(id, userId, itemId, amount, timePeriod, "");
+        this(userId, itemId, amount, timePeriod, "");
     }
 
-    public Reservation(String id, String userId, String itemId, int amount, TimePeriod timePeriod, String message) {
+    public Reservation(String userId, String itemId, int amount, TimePeriod timePeriod, String message) {
         // Constructor: Multiple amount with message
-        this.id = id;
         this.userId = userId;
         this.itemId = itemId;
         this.amount = amount;
@@ -44,12 +51,8 @@ public class Reservation {
         this.message = message;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUserId() {
