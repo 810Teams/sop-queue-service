@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT | 8081;
+const port = process.env.PORT | 8080;
 require("./database/db");
 const productRouter = require("./router/product");
 
@@ -13,11 +13,11 @@ const eureka = new Eureka({
       hostName: 'localhost',
       ipAddr: '127.0.0.1',
       port:  {
-          '$': 8081,
+          '$': 8080,
           '@enabled': 'true',
       },
       vipAddress: 'product-service',
-      statusPageUrl: 'http://localhost:8081/',
+      statusPageUrl: 'http://localhost:8080/',
       dataCenterInfo:  {
           '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
           name: 'MyOwn',
@@ -26,8 +26,8 @@ const eureka = new Eureka({
       fetchRegistry: true
   },
   eureka: {
-      host: 'localhost',
-      port: 8080,
+      host: 'https://eureka-server-258207.appspot.com',
+      port: 80,
       servicePath: '/eureka/apps/'
   }
 });
