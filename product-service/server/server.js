@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT | 8081;
+const port = process.env.PORT | 8080;
 require("./database/db");
 const productRouter = require("./router/product");
 
@@ -13,11 +13,11 @@ const eureka = new Eureka({
       hostName: 'localhost',
       ipAddr: '127.0.0.1',
       port:  {
-          '$': 8081,
+          '$': 8080,
           '@enabled': 'true',
       },
       vipAddress: 'product-service',
-      statusPageUrl: 'http://localhost:8081/',
+      statusPageUrl: 'https://vocal-pathway-257309.appspot.com',
       dataCenterInfo:  {
           '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
           name: 'MyOwn',
