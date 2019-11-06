@@ -56,10 +56,10 @@ const eureka = new Eureka({
     servicePath: "/eureka/app"
   }
 });
-// eureka.logger.level("debug");
-// eureka.start(function(error) {
-//   console.log(error || "complete");
-// });
+eureka.logger.level("debug");
+eureka.start(function(error) {
+  console.log(error || "complete");
+});
 
 // Router
 app.use(express.json());
