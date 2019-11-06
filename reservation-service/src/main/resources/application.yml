@@ -14,4 +14,4 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: https://eureka02.appspot.com/
+      defaultZone: https://eureka-server-258207.appspot.com/eureka

@@ -4,6 +4,8 @@ import com.teams810.reservation.api.entities.Reservation;
 import com.teams810.reservation.api.entities.TimePeriod;
 import com.teams810.reservation.api.exceptions.InvalidStatusFlowException;
 import com.teams810.reservation.api.repositories.ReservationRepository;
+import com.teams810.reservation.api.token.AccountToken;
+import com.teams810.reservation.api.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +34,6 @@ public class ReservationController {
     ) {
         // Operation: Creates a reservation from POST request.
         // Returns: Reservation created
-
-//        reservationList.add(reservation);
 
         repository.save(reservation);
 
@@ -94,14 +94,13 @@ public class ReservationController {
 
         try {
             reservation.cancelByUser();
+            repository.save(reservation);
         } catch (InvalidStatusFlowException ex) {
             ex.printStackTrace();
         } catch (NullPointerException ex) {
             return null;
         }
 
-        // TODO: Implements cancel by shop
-
-        return new ResponseEntity<Reservation>(new Reservation(), HttpStatus.OK);
+        return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
     }
 }
