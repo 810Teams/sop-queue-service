@@ -4,8 +4,6 @@ import com.teams810.reservation.api.entities.Reservation;
 import com.teams810.reservation.api.entities.TimePeriod;
 import com.teams810.reservation.api.exceptions.InvalidStatusFlowException;
 import com.teams810.reservation.api.repositories.ReservationRepository;
-import com.teams810.reservation.api.token.AccountToken;
-import com.teams810.reservation.api.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +26,7 @@ public class ReservationController {
         return "Reservation Service Index";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/reservation/new", method = RequestMethod.POST)
     public ResponseEntity<Reservation> newReservation(
             @RequestBody Reservation reservation
     ) {
@@ -40,7 +38,7 @@ public class ReservationController {
         return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/reservation", method = RequestMethod.GET)
+    @RequestMapping(value = "/reservation/all", method = RequestMethod.GET)
     public ResponseEntity<List<Reservation>> getAllReservation() {
         // Operation: Get all reservations
         // Returns: All reservations
@@ -53,7 +51,7 @@ public class ReservationController {
         return new ResponseEntity<List<Reservation>>(reservationList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/reservation/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/reservation/id/{id}", method = RequestMethod.GET)
     public ResponseEntity<Reservation> getReservation(
             @PathVariable Long id
     ) {
@@ -63,7 +61,7 @@ public class ReservationController {
         return new ResponseEntity<Reservation>(repository.findById(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user/{userId}/reservation", method = RequestMethod.GET)
+    @RequestMapping(value = "reservation/user/{userId}", method = RequestMethod.GET)
     public ResponseEntity<List<Reservation>> userReservation(
             @PathVariable String userId
     ) {
@@ -83,7 +81,7 @@ public class ReservationController {
 
     // TODO: Implements shop reservation list
 
-    @RequestMapping(value = "/reservation/{id}/cancel", method = RequestMethod.POST)
+    @RequestMapping(value = "/reservation/id/{id}/cancel", method = RequestMethod.POST)
     public ResponseEntity<Reservation> cancelReservation(
             @PathVariable Long id
     ) {
