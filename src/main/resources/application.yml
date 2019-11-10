@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: routing
+  profiles:
+    active: default
+  cloud:
+    config:
+      enabled: true
+zuul:
+  prefix: /api
+  ignoredServices: '*'
+  routes:
+    PRODUCT-SERVICE:
+      path: /product/**
+      stripPrefix: false
+    SHOP-SERVICE:
+      path: /shop/**
+      stripPrefix: false
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: https://eureka-server-258207.appspot.com/eureka/
+management:
+  security:
+    enabled: false
