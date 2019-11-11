@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const axios = require("axios");
+const url = "http://localhost:8080/logoutAll";
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -20,21 +22,29 @@ const userSchema = new mongoose.Schema(
         }
       }
     },
-    firstname:{
-        type:String,
-        trim:true,
-        required:true,
+    firstname: {
+      type: String,
+      trim: true,
+      required: true
     },
-    lastname:{
-        type:String,
-        trim:true,
-        required:true,
+    lastname: {
+      type: String,
+      trim: true,
+      required: true
     },
-    role:{
-        type:String,
-        enum: ['customer', 'shop'],
-        required:true
-    }
+    role: {
+      type: String,
+      enum: ["customer", "shop"],
+      required: true
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true
+        }
+      }
+    ]
   },
   {
     timestamps: true
@@ -49,6 +59,12 @@ userSchema.methods.toJSON = function() {
   delete userObject.tokens;
 
   return userObject;
+};
+
+userSchema.methods.logout = async function(token) {
+  console.log(token);
+  const response = await axios.get(url, { headers: { Authorization: token } });
+  const { data } = response;
 };
 
 // Hash the plain text password before save

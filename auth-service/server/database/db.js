@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-url_prod = "mongodb+srv://patrick:rzx3396c@productcluster-gubrn.gcp.mongodb.net/auth-service?retryWrites=true&w=majority"
-url_dev = "mongodb://127.0.0.1:27017/auth-service"
+url_prod = "mongodb+srv://patrick:rzx3396c@productcluster-gubrn.gcp.mongodb.net/user-management-service?retryWrites=true&w=majority"
+url_dev = "mongodb://127.0.0.1:27017/user-management-service"
 mongoose
   .connect(url_dev, {
     useNewUrlParser: true,
