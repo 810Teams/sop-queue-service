@@ -3,7 +3,7 @@ const app = express()
 const port = process.env.PORT | 8080
 require('./database/db')
 const shopRouter = require('./router/shop')
-
+const cors = require('cors')
 
 const Eureka = require("eureka-js-client").Eureka;
 
@@ -39,6 +39,7 @@ eureka.start(function(error){
 
 // Router
 app.use(express.json());
+app.use(cors());
 app.use(shopRouter)
 
 // Create server
