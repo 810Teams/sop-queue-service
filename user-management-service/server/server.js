@@ -19,7 +19,7 @@ const eureka = new Eureka({
       "@enabled": "true"
     },
     vipAddress: "user-management-service",
-    statusPageUrl: "http://localhost:8080",
+    statusPageUrl: "https://user-management-service-258809.appspot.com",
     dataCenterInfo: {
       "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
       name: "MyOwn"

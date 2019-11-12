@@ -20,7 +20,7 @@ const eureka = new Eureka({
           '@enabled': 'true',
       },
       vipAddress: 'auth-service',
-      statusPageUrl: 'http://localhost:8080',
+      statusPageUrl: 'https://auth-service-258809.appspot.com',
       dataCenterInfo:  {
           '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
           name: 'MyOwn',
