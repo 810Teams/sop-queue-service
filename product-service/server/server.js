@@ -18,7 +18,7 @@ const eureka = new Eureka({
       "@enabled": "true"
     },
     vipAddress: "product-service",
-    statusPageUrl: "https://vocal-pathway-257309.appspot.com",
+    statusPageUrl: "https://product-service-258809.appspot.com",
     dataCenterInfo: {
       "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
       name: "MyOwn"
