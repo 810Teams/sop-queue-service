@@ -23,7 +23,8 @@ const shopSchema = mongoose.Schema(
     owner:{
       type:String,
       trim:true,
-      unique:true
+      unique:true,
+      required:true
     },
     address: {
       type: String,
@@ -40,7 +41,8 @@ const shopSchema = mongoose.Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    strict: true
   }
 );
 

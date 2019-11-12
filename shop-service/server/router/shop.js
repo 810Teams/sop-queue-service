@@ -3,6 +3,7 @@ const router = express.Router();
 const Shop = require("../model/shop");
 const mongoose = require("mongoose");
 const axios = require("axios");
+const auth = require("../middleware/auth");
 
 const url = "http://localhost:3000";
 // Document
@@ -39,10 +40,10 @@ router.post("/shops", auth, async (req, res) => {
     }
 
     await shop.save();
-    res.send({ shop, items: data.items });
+    res.status(201).send({ shop, items:data.items });
+
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+    res.status(500).send({error});
   }
 });
 
@@ -82,7 +83,7 @@ router.get("/shops/me", auth, async (req, res) => {
   }
 });
 
-router.patch("/shops/me", auth ,async (req, res) => {
+router.patch("/shops/me", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = [
     "shopname",
@@ -98,7 +99,7 @@ router.patch("/shops/me", auth ,async (req, res) => {
     return res.status(400).send({ error: "Invalid updates" });
   }
   try {
-    const shop = await Shop.findOne({owner:req.user.username});
+    const shop = await Shop.findOne({ owner: req.user.username });
     if (!shop) {
       return res.status(404).send();
     }
@@ -122,13 +123,13 @@ router.patch("/shops/me", auth ,async (req, res) => {
 });
 
 // Delete shop
-router.delete("/shops/me", auth,async (req, res) => {
+router.delete("/shops/me", auth, async (req, res) => {
   try {
-    const shop = await Shop.findOneAndDelete({owner:req.user.username});
+    const shop = await Shop.findOneAndDelete({ owner: req.user.username });
     const headers = {
       Authorization: req.token
     };
-    const response = await axios.delete(url + "/products/me",{headers});
+    const response = await axios.delete(url + "/products/me", { headers });
     const { data } = response;
 
     if (!shop || !data) {

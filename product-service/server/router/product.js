@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../model/product");
-
+const auth = require('../middleware/auth')
 // Document
 router.get("/", (req, res) => {
   res.send({ document: "https://github.com/810Teams/sop-reservation-service" });
@@ -46,18 +46,18 @@ router.get("/products/me", auth, async (req, res) => {
   }
 });
 
-// delete product in the shop
-router.delete("/products/me", auth, async (req, res) => {
-  try {
-    const product = await Product.deleteOne({ owner: req.user.username });
-    if (product.deletedCount === 0) {
-      return res.status(404).send();
-    }
-    res.send({ status: true });
-  } catch (error) {
-    res.status(500).send({ error });
-  }
-});
+// // delete product in the shop
+// router.delete("/products/me", auth, async (req, res) => {
+//   try {
+//     const product = await Product.deleteOne({ owner: req.user.username });
+//     if (product.deletedCount === 0) {
+//       return res.status(404).send();
+//     }
+//     res.send({ status: true });
+//   } catch (error) {
+//     res.status(500).send({ error });
+//   }
+// });
 
 // -------------------Items-------------------
 // Get Items
@@ -75,7 +75,8 @@ router.get("/products/me/items/", auth, async (req, res) => {
   }
 });
 // Create Item
-router.post("/products/me/items/", async (req, res) => {
+router.post("/products/me/items/", auth,async (req, res) => {
+  console.log("In")
   try {
     const product = await Product.findOne({ owner: req.user.username });
     if (!product) {
@@ -104,7 +105,7 @@ router.post("/products/me/items/", async (req, res) => {
   }
 });
 // Update Items by id
-router.patch("/products/me/items/:item_id", async (req, res) => {
+router.patch("/products/me/items/:item_id",auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "price"];
   const isValidOperation = updates.every(update =>
@@ -130,7 +131,7 @@ router.patch("/products/me/items/:item_id", async (req, res) => {
 });
 
 // Delete item
-router.delete("/products/me/items/:item_id", async (req, res) => {
+router.delete("/products/me/items/:item_id", auth,async (req, res) => {
   try {
     const product = await Product.findOne({ owner: req.user.username });
     if (!product) {

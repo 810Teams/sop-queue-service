@@ -10,7 +10,8 @@ const productSchema = mongoose.Schema({
   },
   items: [itemSchema]
 },{
-  timestamps: true
+  timestamps: true,
+  strict: true
 });
 
 const Product = mongoose.model("Product", productSchema);
