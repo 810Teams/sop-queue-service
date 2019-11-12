@@ -30,7 +30,7 @@
 ## Product-service
 
 - `POST /products`
-- `GET /products`
+- `GET /products/all`
 - `GET /products/me`
 - `POST /products/me/items/`
 - `GET /products/me/items/`
