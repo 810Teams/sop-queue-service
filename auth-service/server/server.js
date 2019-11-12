@@ -43,6 +43,9 @@ eureka.start(function(error){
 app.use(express.json());
 app.use(cors())
 app.use(authRouter);
+authRouter.use(function(req, res, next) {
+  res.header('Content-Type', 'application/json');
+})
 
 // Create server
 app.listen(port, () => {

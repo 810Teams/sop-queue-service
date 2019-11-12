@@ -40,8 +40,11 @@ eureka.start(function(error) {
 
 // Router
 app.use(express.json());
-app.use(cros());
+app.use(cors());
 app.use(userRouter);
+userRouter.use(function(req, res, next) {
+  res.header('Content-Type', 'application/json');
+})
 
 // Create server
 app.listen(port, () => {
