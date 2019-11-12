@@ -4,25 +4,34 @@ const Shop = require("../model/shop");
 const mongoose = require("mongoose");
 const axios = require("axios");
 
-const url = "https://vocal-pathway-257309.appspot.com";
+const url = "http://localhost:3000";
 // Document
 router.get("/", (req, res) => {
   res.send({ document: "https://github.com/810Teams/sop-reservation-service" });
 });
 
 // Create shop
-router.post("/shops", async (req, res) => {
+router.post("/shops", auth, async (req, res) => {
   try {
     const shop = new Shop({
       shopname: req.body.shopname,
       description: req.body.description,
       tel: req.body.tel,
-      address: req.body.address
+      address: req.body.address,
+      owner: req.user.username
     });
-    const response = await axios.post(url + "/products", {
-      owner: shop._id,
-      items: req.body.items
-    });
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: req.token
+    };
+    const response = await axios.post(
+      url + "/products",
+      {
+        owner: req.user.username,
+        items: req.body.items
+      },
+      { headers }
+    );
     const { data } = response;
 
     if (!shop) {
@@ -52,25 +61,28 @@ router.get("/shops", async (req, res) => {
 });
 
 // Get shop
-router.get("/shops/:id", async (req, res) => {
+router.get("/shops/me", auth, async (req, res) => {
   try {
-    const shop = await Shop.findById(req.params.id);
-    
+    const shop = await Shop.findOne({ owner: req.user.username });
+
     if (!shop) {
       return res.status(404).send();
     }
-    
-    const response = await axios.get(url + "/products/" + shop._id);
+    const headers = {
+      Authorization: req.token
+    };
+    const response = await axios.get(url + "/products/me", {
+      headers
+    });
     const { data } = response;
-
     res.send({ shop, items: data.items });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({ error });
   }
 });
 
-router.patch("/shops/:id", async (req, res) => {
+router.patch("/shops/me", auth ,async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = [
     "shopname",
@@ -86,7 +98,7 @@ router.patch("/shops/:id", async (req, res) => {
     return res.status(400).send({ error: "Invalid updates" });
   }
   try {
-    const shop = await Shop.findById(req.params.id);
+    const shop = await Shop.findOne({owner:req.user.username});
     if (!shop) {
       return res.status(404).send();
     }
@@ -110,10 +122,13 @@ router.patch("/shops/:id", async (req, res) => {
 });
 
 // Delete shop
-router.delete("/shops/:id", async (req, res) => {
+router.delete("/shops/me", auth,async (req, res) => {
   try {
-    const shop = await Shop.findByIdAndDelete(req.params.id);
-    const response = await axios.delete(url + "/products/" + req.params.id);
+    const shop = await Shop.findOneAndDelete({owner:req.user.username});
+    const headers = {
+      Authorization: req.token
+    };
+    const response = await axios.delete(url + "/products/me",{headers});
     const { data } = response;
 
     if (!shop || !data) {

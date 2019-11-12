@@ -20,6 +20,11 @@ const shopSchema = mongoose.Schema(
         }
       }
     },
+    owner:{
+      type:String,
+      trim:true,
+      unique:true
+    },
     address: {
       type: String,
       required: true
