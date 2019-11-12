@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const axios = require("axios");
-const url = "http://localhost:8080/logoutAll";
+const url = "https://auth-service-258809.appspot.com/logoutAll";
 const userSchema = new mongoose.Schema(
   {
     username: {
