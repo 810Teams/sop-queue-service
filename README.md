@@ -4,9 +4,9 @@
 
 - `POST /shops`
 - `GET /shops`
-- `GET /shops/:shop_id`
-- `PATCH /shops/:shop_id`
-- `DELETE /shops/:shop_id`
+- `GET /shops/me`
+- `PATCH /shops/me`
+- `DELETE /shops/me`
 
 ### Create shop
 ```json
@@ -31,12 +31,11 @@
 
 - `POST /products`
 - `GET /products`
-- `GET /products/:shop_id`
-- `DELETE /products/:shop_id`
-- `POST /products/:shop_id/items/`
-- `GET /products/:shop_id/items/`
-- `GET /products/:shop_id/items/:item_id`
-- `DELETE /products/:shop_id/items/:item_id`
+- `GET /products/me`
+- `POST /products/me/items/`
+- `GET /products/me/items/`
+- `GET /products/me/items/:item_id`
+- `DELETE /products/me/items/:item_id`
 
 ### Change items or Create items
 ```json
