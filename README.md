@@ -2,8 +2,10 @@
 
 ## Shop-service
 
-- `POST /shops`
 - `GET /shops`
+
+### All need authentication
+- `POST /shops`
 - `GET /shops/me`
 - `PATCH /shops/me`
 - `DELETE /shops/me`
@@ -29,8 +31,10 @@
 
 ## Product-service
 
-- `POST /products`
 - `GET /products/all`
+
+### All need authentication
+- `POST /products`
 - `GET /products/me`
 - `POST /products/me/items/`
 - `GET /products/me/items/`
