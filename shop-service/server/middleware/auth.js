@@ -1,5 +1,5 @@
 const axios = require("axios");
-const url = "http://localhost:8080/verify";
+const url = "https://auth-service-258809.appspot.com/verify";
 
 const auth = async (req, res, next) => {
   try {
