@@ -2,11 +2,9 @@ package com.teams810.reservation.api.entities;
 
 import com.teams810.reservation.api.exceptions.InvalidStatusFlowException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Reservation {
@@ -14,8 +12,9 @@ public class Reservation {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String userId;
-    private String itemId;
-    private int amount;
+    @ElementCollection
+    @CollectionTable(name="listOfItemData")
+    private List<ItemData> itemData;
     private TimePeriod timePeriod;
     private ReservationStatus status;
     private String message;
@@ -26,29 +25,16 @@ public class Reservation {
         this.message = "";
     }
 
-    public Reservation(String userId, String itemId, TimePeriod timePeriod) {
-        // Constructor: Single amount without message
-        this(userId, itemId, timePeriod, "");
+    public Reservation(String userId, List<ItemData> itemData, TimePeriod timePeriod) {
+        this(userId, itemData, timePeriod, "");
     }
 
-    public Reservation(String userId, String itemId, TimePeriod timePeriod, String message) {
-        // Constructor: Single amount with message
-        this(userId, itemId, 1, timePeriod, message);
-    }
-
-    public Reservation(String userId, String itemId, int amount, TimePeriod timePeriod) {
-        // Constructor: Multiple amount without message
-        this(userId, itemId, amount, timePeriod, "");
-    }
-
-    public Reservation(String userId, String itemId, int amount, TimePeriod timePeriod, String message) {
-        // Constructor: Multiple amount with message
+    public Reservation(String userId, List<ItemData> itemData, TimePeriod timePeriod, String message) {
         this.userId = userId;
-        this.itemId = itemId;
-        this.amount = amount;
+        this.itemData = itemData;
         this.timePeriod = timePeriod;
-        this.status = ReservationStatus.WAITING;
         this.message = message;
+        this.status = ReservationStatus.WAITING;
     }
 
     public Long getId() {
@@ -59,12 +45,8 @@ public class Reservation {
         return userId;
     }
 
-    public String getItemId() {
-        return itemId;
-    }
-
-    public int getAmount() {
-        return amount;
+    public List<ItemData> getItemData() {
+        return itemData;
     }
 
     public TimePeriod getTimePeriod() {

@@ -61,7 +61,7 @@ public class ReservationController {
         return new ResponseEntity<Reservation>(repository.findById(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "reservation/user/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/reservation/user/{userId}", method = RequestMethod.GET)
     public ResponseEntity<List<Reservation>> userReservation(
             @PathVariable String userId
     ) {
