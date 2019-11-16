@@ -1,6 +1,6 @@
 spring:
   application:
-    name: reservation
+    name: reservation-service
   profiles:
     active: default
   cloud:
