@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const axios = require("axios");
 const auth = require("../middleware/auth");
 
-const url = "http://localhost:3000";
+const url = " https://product-service-258809.appspot.com";
 // Document
 router.get("/", (req, res) => {
   res.send({ document: "https://github.com/810Teams/sop-reservation-service" });
@@ -43,6 +43,7 @@ router.post("/shops", auth, async (req, res) => {
     res.status(201).send({ shop, items:data.items });
 
   } catch (error) {
+    console.log(error)
     res.status(500).send({error});
   }
 });
