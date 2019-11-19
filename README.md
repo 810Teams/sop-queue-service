@@ -21,11 +21,15 @@ GET /Comment
 GET /Comment/ชื่อร้าน
 ทำการดึง Comment จากชื่อร้าน บน service 
 
-Use to verify token 
+Use to verify token
 -------------------
 *** How to use ***
+
 1.Attach token with header `Bearer tokenxxx`
+
 2.Send get request
+
 3.Wait for responding from server
+
 -------------------
 
