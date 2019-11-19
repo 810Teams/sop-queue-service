@@ -41,20 +41,40 @@ public class Reservation {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public List<ItemData> getItemData() {
         return itemData;
     }
 
+    public void setItemData(List<ItemData> itemData) {
+        this.itemData = itemData;
+    }
+
     public TimePeriod getTimePeriod() {
         return timePeriod;
     }
 
+    public void setTimePeriod(TimePeriod timePeriod) {
+        this.timePeriod = timePeriod;
+    }
+
     public ReservationStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(ReservationStatus status) {
+        this.status = status;
     }
 
     public String getMessage() {
