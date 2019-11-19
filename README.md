@@ -1,8 +1,8 @@
 # API Endpoints : บันทึก และดึงค่าจาก Comment
 
-POST /Comment
+* POST /Comment
 
-ส่ง comment ขึ้นไปบน service
+  ส่ง comment ขึ้นไปบน service
 
 {
 
@@ -14,13 +14,13 @@ POST /Comment
         
 }
 
-GET /Comment
+* GET /Comment
 
-ทำการดึง Comment จาก Service 
+  ทำการดึง Comment จาก Service 
 
-GET /Comment/ชื่อร้าน
+* GET /Comment/ชื่อร้าน
 
-ทำการดึง Comment จากชื่อร้าน บน service 
+  ทำการดึง Comment จากชื่อร้าน บน service 
 
 Use to verify token
 -------------------
