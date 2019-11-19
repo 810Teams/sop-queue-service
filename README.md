@@ -1,13 +1,21 @@
 # API Endpoints : บันทึก และดึงค่าจาก Comment
 
-*POST /Comment*
-*ส่ง comment ขึ้นไปบน service*
-*{*
-        *"customer": "String", #customername*
+POST /Comment
+
+ส่ง comment ขึ้นไปบน service
+
+{
+
+        "customer": "String", #customername
+        
         "name": "String", #shopname
+        
         "review": "String"
+        
 }
+
 GET /Comment
+
 ทำการดึง Comment จาก Service 
 
 GET /Comment/ชื่อร้าน
