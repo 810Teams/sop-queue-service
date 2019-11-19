@@ -9,7 +9,18 @@ public class Shop extends ServiceEntity {
     private String address;
     private String rating;
     private String owner;
-    private List items;
+
+    public Shop() {
+    }
+
+    public Shop(String shopname, String description, String tel, String address, String rating, String owner) {
+        this.shopname = shopname;
+        this.description = description;
+        this.tel = tel;
+        this.address = address;
+        this.rating = rating;
+        this.owner = owner;
+    }
 
     public String getShopname() {
         return shopname;
@@ -33,9 +44,5 @@ public class Shop extends ServiceEntity {
 
     public String getOwner() {
         return owner;
-    }
-
-    public List getItems() {
-        return items;
     }
 }

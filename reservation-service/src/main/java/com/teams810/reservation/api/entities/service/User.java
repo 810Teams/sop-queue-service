@@ -9,6 +9,13 @@ public class User extends ServiceEntity {
     public User() {
     }
 
+    public User(String username, String firstname, String lastname, String role) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.role = role;
+    }
+
     public String getUsername() {
         return username;
     }
