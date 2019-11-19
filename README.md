@@ -1,4 +1,4 @@
-*API Endpoints : GET AND POST COMMENT*
+**API Endpoints : GET AND POST COMMENT**
 
 POST /Comment
 ส่ง comment ขึ้นไปบน service
