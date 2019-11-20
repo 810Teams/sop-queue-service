@@ -66,10 +66,14 @@ public class ReservationController {
         // Operation: Get a reservation by id.
         // Returns: A certain reservation
         try {
+            Reservation reservation = repository.findById(id);
             String userId = discovery.verifyUser(token).getUsername();
+            String role = discovery.verifyUser(token).getRole();
 
-            if (repository.findById(id).getUserId().equals(userId)) {
-                return new ResponseEntity<Reservation>(repository.findById(id), HttpStatus.OK);
+            if (role.equals("customer") && reservation.getUserId().equals(userId)) {
+                return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
+            } else if (role.equals("shop") && checkIfIsReservationOfShop(reservation, token)) {
+                return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
             } else {
                 // UNAUTHORIZED
                 return null;
@@ -166,7 +170,7 @@ public class ReservationController {
         }
     }
 
-    @RequestMapping(value = "/reservation/id/{id}/check/{check}", method = RequestMethod.POST)
+    @RequestMapping(value = "/reservation/id/{id}/{check}", method = RequestMethod.POST)
     public ResponseEntity<Reservation> checkReservation(
             @PathVariable("id") Long id,
             @PathVariable("check") String check, // success | missed
