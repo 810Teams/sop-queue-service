@@ -5,6 +5,7 @@ import com.teams810.reservation.api.entities.Reservation;
 import com.teams810.reservation.api.entities.TimePeriod;
 import com.teams810.reservation.api.entities.service.Item;
 import com.teams810.reservation.api.entities.service.Shop;
+import com.teams810.reservation.api.entities.service.User;
 import com.teams810.reservation.api.exceptions.InvalidStatusFlowException;
 import com.teams810.reservation.api.repositories.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class ReservationController {
         return new ResponseEntity<List<Reservation>>(reservationList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/reservation/view/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/reservation/id/{id}", method = RequestMethod.POST)
     public ResponseEntity<Reservation> getReservation(
             @PathVariable("id") Long id,
             @RequestHeader("Authorization") String token
@@ -114,15 +115,13 @@ public class ReservationController {
         // Operation: Get all reservations of a certain user.
         // Returns: Reservation list of a cart
         List<Reservation> reservationList = new ArrayList<Reservation>();
+        User user = discovery.verifyUser(token);
 
         try {
-            if (userId.equals(discovery.verifyUser(token).getUsername())) {
+            if (user.getRole().equals("shop") && userId.equals(user.getUsername())) {
                 for (Reservation r : repository.findAll()) {
-                    for (Object i : discovery.getShopItems(token).getItems()) {
-                        if (r.getItemData().get(0).getItemId().equals(((Item)i).get_id())) {
-                            reservationList.add(r);
-                            break;
-                        }
+                    if (checkIfIsReservationOfShop(r, token)) {
+                        reservationList.add(r);
                     }
                 }
                 return new ResponseEntity<List<Reservation>>(reservationList, HttpStatus.OK);
@@ -136,7 +135,7 @@ public class ReservationController {
         }
     }
 
-    @RequestMapping(value = "/reservation/cancel/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/reservation/id/{id}/cancel", method = RequestMethod.POST)
     public ResponseEntity<Reservation> cancelReservation(
             @PathVariable("id") Long id,
             @RequestHeader("Authorization") String token
@@ -144,25 +143,53 @@ public class ReservationController {
         // Operation: Cancel a reservation, changes reservation status.
         // Returns: Cancelled reservation
         Reservation reservation = repository.findById(id);
+        User user = discovery.verifyUser(token);
 
         try {
-            String userId = discovery.verifyUser(token).getUsername();
-            String role = discovery.verifyUser(token).getRole();
+            String userId = user.getUsername();
+            String role = user.getRole();
 
-            if (role.equals("customer")) {
-                if (reservation.getUserId().equals(userId)) {
-                    reservation.cancelByUser();
+            if (role.equals("customer") && reservation.getUserId().equals(userId)) {
+                reservation.cancelByUser();
+            } else if (role.equals("shop") && checkIfIsReservationOfShop(reservation, token)) {
+                reservation.cancelByShop();
+            } else {
+                // UNAUTHORIZED
+                return null;
+            }
+            repository.save(reservation);
+
+            return new ResponseEntity<Reservation>(repository.findById(id), HttpStatus.OK);
+        } catch (NullPointerException | HttpClientErrorException | InvalidStatusFlowException e) {
+            // NOT_FOUND | NOT_FOUND | INTERNAL_SERVER_ERROR
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/reservation/id/{id}/check/{check}", method = RequestMethod.POST)
+    public ResponseEntity<Reservation> checkReservation(
+            @PathVariable("id") Long id,
+            @PathVariable("check") String check, // success | missed
+            @RequestHeader("Authorization") String token
+    ) {
+        // Operation: Cancel a reservation, changes reservation status.
+        // Returns: Cancelled reservation
+        Reservation reservation = repository.findById(id);
+        String role = discovery.verifyUser(token).getRole();
+
+        try {
+            if (role.equals("shop") && checkIfIsReservationOfShop(reservation, token)) {
+                if (check.equals("success")) {
+                    reservation.checkSuccess();
+                } else if (check.equals("missed")) {
+                    reservation.checkMissed();
                 } else {
-                    // UNAUTHORIZED
+                    // BAD_REQUEST
                     return null;
                 }
-            } else if (role.equals("shop")) {
-                if (userId.equals(discovery.getShop(token).getOwner())) {
-                    reservation.cancelByShop();
-                } else {
-                    // UNAUTHORIZED
-                    return null;
-                }
+            } else {
+                // UNAUTHORIZED
+                return null;
             }
 
             repository.save(reservation);
@@ -172,5 +199,16 @@ public class ReservationController {
             // NOT_FOUND | NOT_FOUND | INTERNAL_SERVER_ERROR
             return null;
         }
+    }
+
+    private boolean checkIfIsReservationOfShop(Reservation reservation, String token) {
+        // Operation: Check if a reservation is a reservation of a certain shop by shop token
+        // Returns: boolean
+        for (Object i : discovery.getShopItems(token).getItems()) {
+            if (reservation.getItemData().get(0).getItemId().equals(((Item) i).get_id())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
