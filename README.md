@@ -6,7 +6,7 @@
 {
     "items": [
         {
-            "itemId": "String"
+            "itemId": "String",
             "amount": "Integer"
         }
     ],
