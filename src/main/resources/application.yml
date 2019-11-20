@@ -1,0 +1,27 @@
+
+zuul:
+  routes:
+    users:
+      path: /comment/**
+      sensitiveHeaders:
+      url: https://comment01-service.appspot.com/
+    auth:
+      path: /auth/**
+      sensitiveHeaders:
+      url: https://auth-service-258809.appspot.com/
+    product:
+      path: /product/**
+      sensitiveHeaders:
+      url: https://product-service-258809.appspot.com/
+    shop:
+      path: /shop/**
+      sensitiveHeaders:
+      url: https://shop-service-258809.appspot.com/
+    userma:
+      path: /user-manage/**
+      sensitiveHeaders:
+      url: https://user-management-service-258809.appspot.com/
+      
+  host:
+    max-total-connections: 10000
+    max-per-route-connections: 50
