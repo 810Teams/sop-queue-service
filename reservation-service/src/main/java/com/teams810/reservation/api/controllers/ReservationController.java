@@ -26,6 +26,11 @@ public class ReservationController {
     @Autowired
     private ServiceDiscoveryClient discovery;
 
+    @RequestMapping(value = "/")
+    public String index() {
+        return "Reservation Service";
+    }
+
     @RequestMapping(value = "/reservation/new", method = RequestMethod.POST)
     public ResponseEntity<Reservation> newReservation(
             @RequestBody Reservation reservation,
