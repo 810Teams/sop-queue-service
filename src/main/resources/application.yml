@@ -9,6 +9,10 @@ zuul:
       path: /auth/**
       sensitiveHeaders:
       url: https://auth-service-258809.appspot.com/
+    reservation:
+      path: /reservation/**
+      sensitiveHeaders:
+      url: https://comment02-service.appspot.com/
     product:
       path: /product/**
       sensitiveHeaders:
