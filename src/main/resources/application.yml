@@ -1,15 +1,20 @@
+
 spring:
   application:
     name: Comment-service
   cloud:
     config:
-      uri: https://eurekat-257122.appspot.com
+      uri: https://comment01-service.appspot.com
     discovery:
       client:
         simple:
           local:
-            uri: http://eurekat-257122.appspot.com
+            uri: https://comment01-service.appspot.com
 eureka:
+  hostname: https://comment01-service.appspot.com
+  instance:
+    statusPageUrl: https://comment01-service.appspot.com
+    healthCheckUrl: https://comment01-service.appspot.com/health
   client:
     serviceUrl:
       defaultZone: https://eureka-server-258207.appspot.com/eureka
