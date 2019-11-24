@@ -17,6 +17,10 @@ Queue Service project of Service-Oriented Programming Class, IT KMITL.
 
   path: /product/**
   
+* reservation:
+
+  path: /reservation/**
+  
 * Shop-service
 
   path: /shop/**
