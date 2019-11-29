@@ -1,51 +1,59 @@
-# Reservation Service
-Reservation Service project of Service-Oriented Programming Class, Information Technology, King Mongkut's Institute of Technolgoy Ladkrabang.
+# API Endpoints : Reservation Service
 
-<img src="https://www.lavi.com/wp-content/uploads/2013/07/Why-We-Wont-Wait-blog.jpg" width="100%">
+### Create New Reservation
 
-## What is Reservation Service ?
-Reservation Service is a service that would grant you an ability to queue or make a reservation for you on a specific shop. Queue ahead, then receive goods or service on time. No need to waste time waiting at the spot.
+`POST /reservation/new`
 
-## Why Reservation Service ?
-Have you ever went to your favorite restaurant, barber shop or beauty salon and wait so long? When you thought 20 minutes of time is enough, but it results in 2 hours, which mostly is wasted on waiting. What if you can just queue or make a reservation ahead, then receive goods or service on time. Save more time to do other things than waiting. In addition, there is no need worrying in the goods out of stock.
+- Authentication required
+- Customer token only
 
-## Features
+```json
+{
+    "items": [
+        {
+            "itemId": "String",
+            "amount": "Integer"
+        }
+    ],
+    "timePeriod": {
+        "startDateTime": "yyyy-MM-dd hh:mm",
+        "endDateTime": "yyyy-MM-dd hh:mm"
+    },
+    "message": "String"
+}
+```
 
-### Sign Up and Login
-Before using our service, account is needed. Once you have created your account, you will be able to freely use the service.
+### View All Reservation
 
-### View Shop Information
-Customers can view shop information before making a queue or reservation.
+`GET /reservation/all`
 
-### Manage Own Queues and Reservations
-Main feature of the service. Customers can make, view and cancel queues and reservations. Starting by choosing the shop, select product or service, choose the time, fill other needed information and done! If you think you have made any mistakes, you can cancel the queue any time before the queue or reservation is due, or cancel before a certain duration according to the shop policy.
+- Only for testing and development
 
-Please be aware that if the queue or reservation is falsely made, which means no products or services are actually served accoring to the queue or reservation may result in a penalty.
+### View Single Reservation
 
-### Set Up Your Shop
-As for shop owners, managers and staffs, they can set up the shop in our service for customers to make queues and reservations. Setting up a shop need a following information: shop name, shop type, shop summary, shop opening date & time and shop image. More advanced information and list of products or services can be added later.
+`POST /reservation/id/{id}`
 
-### Manage Product or Service List
-Shops are not able to run if there is no product or service. Shop owners, managers and staffs are able to manage this list, including add, view, update and delete items. All of them are basic operations of list management.
+- Authentication required
+- Customer or shop owner of a certain reservation
 
-### Manage Queues and Reservations of Customers
-After the shop is fully set up, customers can now use the Reservation Service of your shop. After a customer chose a certain product or service to make a queue or reservation, you will be able to see the one customer made. The rest is up to you how you would like to manage these queues and reservations.
+### View Own Reservation
 
-### Advanced Shop Settings
-For more flexibility, shop owners, managers and staffs are able to configure these settings. These settings include the following:
+`POST /reservation/me`
 
-#### Maximum Queues or Reservations on Specific Duration
-A number of maximum queues or reservations that can be created on a specific duration. This is needed due to a certain shop has a limited number of staffs or employees, meaning a limited number of customers can be served at a time.
+- Authentication required
+- Customer token: Show all customer's reservations
+- Shop owner token: Show all shop's received reservations
 
-#### Queue and Reservation Creation Prior Duration
-Duration needed to create queue or reservation before actually receiving one. This is needed due to products and services are not able to be served to customers instantly. Preparation time is needed.
+### Cancel Reservation
 
-#### Queue and Reservation Cancel Prior Duration
-Duration needed to cancel queue or reservation before the actual queue or reservation time. This is needed due to prevent wasteful preparations and to empty a slot for other potential customers.
+`POST /reservation/id/{id}/cancel`
 
-## Conceptual Diagram
+- Authentication required
+- Customer token: Can only cancel before reservation start date time
+- Shop owner token: Cancel *before* reservation end date time will change reservation's status to CANCELLED_BY_SHOP
+- Shop owner token: Cancel *after* reservation end date time will change reservation's status to MISSED
 
-![](readme/img/design_diagram.png)
+### Check Reservation as Success
 
 
 ## Group Members

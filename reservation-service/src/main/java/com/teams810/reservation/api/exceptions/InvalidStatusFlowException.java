@@ -1,4 +1,4 @@
-package exceptions;
+package com.teams810.reservation.api.exceptions;
 
 public class InvalidStatusFlowException extends Exception {
     public InvalidStatusFlowException() {

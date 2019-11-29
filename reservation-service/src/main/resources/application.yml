@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: reservation-service
+  profiles:
+    active: default
+  cloud:
+    config:
+      enabled: true
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: https://eureka-server-258207.appspot.com/eureka
