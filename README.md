@@ -50,12 +50,13 @@ Customers can comment on a certain shop, basically a review.
 
 ## Service API End-Points
 
-- [Authentication Service](README-auth.md)
-- [User Management Service](README-user.md)
-- [Reservation Service](README-reservation.md)
-- [Product Service](README-product.md)
-- [Shop Service](README-shop.md)
-- [Comment Service](README-comment.md)
+- [Authentication Service](auth-service/README.md)
+- [User Management Service](user-management-service/README.md)
+- [Reservation Service](reservation-service/README.md)
+- [Product Service](product-service/README.md)
+- [Shop Service](shop-service/README.md)
+- [Comment Service](comment-service/README.md)
+- [Routing Service](routing-service/README.md)
 
 ## Team
 

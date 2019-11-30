@@ -1,36 +1,21 @@
-# API Endpoints : บันทึก และดึงค่าจาก Comment
+# Comment Service
 
-* POST /Comment
+### POST /Comment
 
-  ส่ง comment ขึ้นไปบน service
+ส่ง comment ขึ้นไปบน service
 
+```json
 {
-
-        "customer": "String", #customername
-        
-        "name": "String", #shopname
-        
+        "customer": "String", // customer name
+        "name": "String", // shop name
         "review": "String"
-        
 }
+```
 
-* GET /Comment
+### GET /Comment
 
-  ทำการดึง Comment จาก Service 
+ทำการดึง Comment จาก Service 
 
-* GET /Comment/ชื่อร้าน
+### GET /Comment/ชื่อร้าน
 
-  ทำการดึง Comment จากชื่อร้าน บน service 
-
-Use to verify token
--------------------
-*** How to use ***
-
-1.Attach token with header `Bearer tokenxxx`
-
-2.Send get request
-
-3.Wait for responding from server
-
--------------------
-
+ทำการดึง Comment จากชื่อร้าน บน service 

@@ -1,32 +1,33 @@
-# sop-reservation-service
-Queue Service project of Service-Oriented Programming Class, IT KMITL.
-
-# API Endpoints : Routing service
+# Routing Service
 
 การเข้าไปในแต่ละ Service สามารถเข้าไปโดย URL https://zuul01.appspot.com/ ตามด้วย path ดังต่อไปนี้
 
-* Comment-service
+## Available Services
 
-  path: /comment/**  
+### Comment Service
+
+`/comment/**`
   
-* Auth-service
+### Authentication Service
 
-  path: /auth/**
+`/auth/**`
   
-* Product-service
+### Product Service
 
-  path: /product/**
+`/product/**`
   
-* reservation:
+### Reservation Service
 
-  path: /reservation/**
+`/reservation/**`
   
-* Shop-service
+### Shop Service
 
-  path: /shop/**
+`/shop/**`
   
-* User Management-service
+### User Management Service
 
-  path: /user-manage/**
+`/user-manage/**`
       
-# Example /GET https://zuul01.appspot.com/comment/comment 
+## Example
+
+`/GET https://zuul01.appspot.com/comment/comment`
