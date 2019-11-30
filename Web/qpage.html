@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+
+
+<body>
+    <div id="app1">
+
+        <nav class="navbar navbar-light bg-light" style="">
+            <a href="manushop.html" class="navbar-brand mb-0 h1">
+                <!-- <img src="sop.png" width="80" height="80" class="d-inline-block align-top" alt=""> -->
+                <h1 style="margin-left: 20%;">SOP_PROJECT</h1>
+            </a>
+            <button style="margin-right: 20%;" class="btn btn-outline-dark" @click="logOut()"> Logout</button>
+        </nav>
+
+
+
+        <div v-if="load">
+            <div class="container">
+                <br />
+                <div v-for="a in hotelSearchResult">
+
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <div class="card" id="">
+                            <!-- <img src="https://www.valuecoders.com/blog/wp-content/uploads/2017/11/featurednew.jpeg" class="card-img-top" alt="..." /> -->
+                            <div class="card-body" style="margin-left: 50px;">
+                                <h1 class=" card-title ">
+                                    Shop : &nbsp {{myshop}}
+                                    <span class="badge badge-secondary ml-5 ">จำนวนคิว: {{count}}
+                                </span>
+                                </h1>
+                                <h1 class="card-text ">
+                                    <br />
+                                    <small class="text-muted ">รายละเอียดร้าน: {{ description }}</small>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <h1 style="margin-top: 50px;margin-bottom: 50px;text-align: center; ">---- คิวในร้าน ----</h1>
+
+                <div class="row my-3">
+                    <div class="col-12" v-for="reservation in info9" style="margin-bottom:20px;" v-if="reservation.status == 'WAITING'">
+                        <div class="card" style="margin-left:30px;margin-right: 30px;">
+                            <div class="card-body " style="margin-left:20px;margin-right: 50px;">
+                                <button class=" close" @click="checkReservation(reservation.id)">
+                                    check
+                                    
+                                </button>
+                                <br>
+                                <br><button class="close " style="margin-top:40px; " @click="cancelReservation(reservation.id)"> 
+                                    cancel
+                            </button>
+                                <p class="card-text " style="margin-top: -50px; ">
+                                    <h5 class="text-muted ">User :&nbsp {{ reservation.userId }}</h5><br>
+
+                                    <div v-for="product in info5.items " style="margin-top: -5px; ">
+                                        <h6 v-if="product._id==reservation.items[0].itemId " class="text-muted ">เมนูอาหาร &nbsp: &nbsp&nbsp {{product.name}}</h6>
+                                    </div>
+                                    <br>
+                                    <h6 class="text-muted ">จำนวที่สั่ง &nbsp: &nbsp&nbsp {{reservation.items[0].amount}}</h6>
+                                    <h6 class="text-muted ">เวลาเริ่มสั่ง &nbsp &nbsp&nbsp&nbsp&nbsp&nbsp: &nbsp&nbsp{{reservation.timePeriod.startDateTime}}</h6>
+                                    <h6 class="text-muted ">เวลามารับอาหาร &nbsp: &nbsp&nbsp {{reservation.timePeriod.endDateTime}}</h6>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 100px;"></div>
+        </div>
+
+        <div v-if="load == false" style="margin-top: 150px;">
+            <!--lodingggggggggggggggggggggggggggggggg -->
+            <div class="loader loader--style2" title="1" style="text-align: center;">
+
+                <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="400px" height="400px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+          <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+            <animateTransform attributeType="xml"
+              attributeName="transform"
+              type="rotate"
+              from="0 25 25"
+              to="360 25 25"
+              dur="0.6s"
+              repeatCount="indefinite"/>
+            </path>
+          </svg>
+                <h1 style="font-size: 600%;"> Loading </h1>
+            </div>
+            <!--lodingggggggggggggggggggggggggggggggg -->
+        </div>
+
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js "></script>
+    <script>
+        var app = new Vue({
+            el: "#app1 ",
+            data: {
+
+
+                description: " ",
+                myshop: " ",
+                myuser: localStorage.loguser,
+                // shopname:info4.shop.shopname,
+                info4: "",
+                info5: "",
+                info7: "",
+                info9: [{
+                        status: "WATTING"
+                    },
+
+                ],
+                count: 0,
+                num: 0,
+                load: false,
+            },
+
+            methods: {
+                addUser(item_id) {
+                    this.submitting = true;
+                    axios.delete('https://zuul01.appspot.com/product/products/me/items/' + item_id, {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            location.reload();
+                        });
+                },
+                logOut() {
+                    this.submitting = true;
+                    axios.get('https://zuul01.appspot.com/auth/logoutall', {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            window.location.href = 'login.html'
+                        });
+                },
+                checkReservation(id) {
+                    axios.post('https://comment02-service.appspot.com/reservation/id/' + id + "/check ", {}, {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            location.reload();
+                        });
+                },
+                cancelReservation(id) {
+                    axios.post('https://comment02-service.appspot.com/reservation/id/' + id + "/cancel ", {}, {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            location.reload();
+                        });
+                },
+
+
+
+            },
+
+
+            computed: {
+                hotelSearchResult() { // function search
+                    return this.info9.filter((a) => {
+
+                        this.num = (a.status == "WAITING");
+                        if (this.num) {
+                            this.count++;
+                        }
+                        return this.num
+                    })
+                }
+            },
+
+
+
+            //  start +-----------------------------------------------------------------------------
+            async mounted() {
+
+                try {
+                    if (localStorage.role == "customer") {
+                        window.location.href = 'box.html'
+                    }
+
+                } catch {}
+
+
+
+                // -----------------------------------------------------------------------------------------------------
+                try {
+                    let response3 = await axios
+                        .get('https://zuul01.appspot.com/shop/shops/me', {
+                            headers: {
+                                Authorization: localStorage.token1,
+
+                            }
+                        })
+                    this.info4 = response3.data;
+                    this.myshop = response3.data.shop.shopname
+                    this.description = response3.data.shop.description
+                } catch (err) {
+                    (console.log(err))
+                    window.location.href = 'formmakeshop.html'
+                }
+                // -----------------------------------------------------------------------------------------------------
+                try {
+                    let response4 = await axios
+                        .get('https://zuul01.appspot.com/product/products/me', {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                    this.info5 = response4.data;
+
+                } catch (err) {
+                    (console.log(err))
+                }
+
+                // -----------------------------------------------------------------------------------------------
+                try {
+                    axios.post('https://comment02-service.appspot.com/reservation/me', {}, {
+                        headers: {
+                            Authorization: localStorage.token1
+                        }
+                    }).then((response) => {
+                        console.log(response);
+                        const data = response.data;
+                        this.info9 = data
+                    });
+
+                } catch (err) {
+                    (console.log(err))
+                }
+                // ---------------------------------------------------------------------------------------
+                this.load = true;
+            },
+            // end mounted----------------------------------------------------
+
+
+
+
+
+        });
+    </script>
+</body>
+
+</html>

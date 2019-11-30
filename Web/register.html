@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login V2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <!--===============================================================================================-->
+
+</head>
+
+<body>
+
+    <div class="bodyx" id="app1">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <!-- <form class="login100-form validate-form"> -->
+                <span class="login100-form-title ">
+						Register
+					</span>
+                <span style="padding-bottom: 60px;display: block;">
+					</span>
+                <div class="wrap-input50 validate-input">
+                    <input class="input100" type="text" name="email" placeholder="Username" v-model="newUser" required>
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input50 validate-input">
+                    <input class="input100" type="password" name="lastname" placeholder="password" v-model="password" required>
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input50 validate-input">
+                    <input class="input100" type="password" name="pass" placeholder="password" required>
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input50 validate-input">
+                    <input class="input100" type="text" name="firstname" placeholder="firstname" v-model="firstname" required>
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input50 validate-input">
+                    <input class="input100" type="text" name="firstname" placeholder="lastname" v-model="lastname" required>
+                    <span class="focus-input100"></span>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">จะเป็นอะไร</label>
+                    <select class="form-control" id="exampleFormControlSelect1" v-model="role">
+                    <option selected>customer</option>
+						<option >shop</option>
+						
+						</select>
+                </div>
+
+
+                <div class="container">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" @click="addUser">
+
+							Register
+							</button>
+                    </div>
+                </div>
+
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+    <!-- end bodyx -->
+
+
+    <div id="dropDownSelect1"></div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app1',
+            data() {
+                return {
+                    users: [],
+                    loading: false,
+                    submitting: false,
+                    newUser: '',
+                    password: '',
+                    firstname: '',
+                    lastname: '',
+                    role: 'customer',
+                }
+            },
+            methods: {
+
+                addUser() {
+                    this.submitting = true;
+                    axios.post('https://user-management-service-258809.appspot.com/users', {
+                            username: this.newUser,
+                            password: this.password,
+                            firstname: this.firstname,
+                            lastname: this.lastname,
+                            role: this.role,
+                        })
+                        .then((response) => {
+                            const data = response.data;
+                            token1 = data;
+                            this.users.push(data);
+                            this.submitting = false;
+                            window.location.href = 'login.html'
+                        });
+                }
+            }
+        })
+    </script>
+
+
+
+
+
+
+
+</body>
+
+</html>

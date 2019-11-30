@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div id="app1">
+
+        <nav class="navbar navbar-light bg-light">
+            <a href="manushop.html" class="navbar-brand mb-0 h1">
+
+                <h1 style="margin-left: 20%;">SOP_PROJECT</h1>
+            </a>
+        </nav>
+
+        <div class="container">
+            <br />
+
+            <br />
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body" style="margin-left: 50px;margin-right: 50px;">
+                            <h1 style="text-align: center;">สรา้งเมนูใหม่</h1>
+                            <div class="form-group">
+                                <label for="inputAddress">ชื่อเมนู</label>
+                                <input type="text" class="form-control" id="inputAddress" placeholder="ข้าว ก๋วยเตี๋ยว" v-model="name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputAddress2">ราคา</label>
+                                <input type="number" class="form-control" id="inputAddress3" placeholder="จำนวนเต็ม ทศนิยม" v-model="price">
+                            </div>
+                            <button type="submit" class="btn btn-secondary btn-lg btn-block" @click="addUser">สร้างเมนู </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: "#app1",
+            data: {
+                manu: " ",
+                name: " ",
+                price: " ",
+
+            },
+            methods: {
+                addUser() {
+                    this.submitting = true;
+                    axios.post('https://zuul01.appspot.com/product/products/me/items', {
+                            name: this.name,
+                            price: this.price,
+                        }, {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            const data = response.data;
+                            manu = data;
+                            window.location.href = 'manushop.html'
+                        });
+                }
+            },
+            // ------------end methods-----------------------
+            async mounted() {
+                try {
+                    if (localStorage.role == "customer") {
+                        window.location.href = 'box.html';
+                    }
+                } catch {}
+                try {
+                    let response1 = await axios
+                        .get('https://zuul01.appspot.com/comment/comment', {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                    this.info2 = response1
+                } catch (err) {
+                    (console.log(err))
+                    window.location.href = 'login.html';
+                }
+
+            }
+
+
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+
+
+<body>
+    <div id="app1">
+
+        <!-- start nav -->
+        <nav class="navbar navbar-light bg-light">
+            <a href="box.html" class="navbar-brand mb-0 h1">
+
+                <h1 style="margin-left: 20%;">SOP_PROJECT</h1>
+            </a>
+            <h1 style="margin-left: 15%;">User: {{ getloguser }}</h1>
+            <button style="margin-right: 20%;" class="btn btn-outline-dark" @click="logOut()"> Logout</button>
+        </nav>
+        <!-- endNev -->
+
+        <!-- start container -->
+        <div v-if="load">
+            <div class="container">
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <!-- <img src="https://www.valuecoders.com/blog/wp-content/uploads/2017/11/featurednew.jpeg" class="card-img-top" alt="..." /> -->
+                            <div class="card-body" style="margin-left: 50px;">
+                                <div v-for="yourOwners in info2.data" v-if="yourOwners.owner == getowner">
+                                    <h1 class=" card-title ">
+                                        Shop : &nbsp{{ yourOwners.shopname }}
+                                        <!-- <span class="badge badge-secondary ml-5 close" style="margin-top: 10px;">จำนวนคิว: {{  }}</span> -->
+
+
+                                    </h1>
+                                    <h1 class="card-text ">
+                                        <br />
+                                        <small class="text-muted ">รายละเอียดร้าน: {{ yourOwners.description}}</small>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end ROW -->
+            </div>
+            <!-- end container -->
+
+
+            <h1 style="margin-top: 50px;margin-bottom: 50px;text-align: center; ">เมนูทั้งหมด</h1>
+
+
+            <!-- startRow -->
+            <div class="container">
+                <div class="row my-3" v-for="manu in info3.data" v-if="manu.owner == getowner" style="margin-left: 13%;">
+                    <div style="margin-left: 10px;" class="card col-md-5" v-for="itemmanu in manu.items">
+                        <div class="card-body ">
+
+                            <button class="btn btn-primary close " style="margin-top: 15px;" data-toggle="modal" data-target="#exampleModalLong" @click="sendId(itemmanu._id)">จอง</button>
+                            <p class="card-text">
+                                <h6 class="text-muted ">ชื่อเมนู : {{itemmanu.name }} </h6>
+                                <!-- <small class="text-muted ">Create By: {{ txt.createBy }}</small> -->
+                                <h6 class="text-muted ">ราคา &nbsp: &nbsp&nbsp{{ itemmanu.price }} บาท</h6>
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <!---------------------------------------- Model start -->
+                    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">ข้อมูลการสั่งอาหร</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                          </button>
+                                </div>
+                                <div class="modal-body">
+
+
+                                    <div class="row" style="margin: auto;margin-bottom: 20px;">
+                                        <div class="col-4" style="font-size: 20px;margin-top: 3px;">
+                                            สั่งกี่อัน
+                                        </div>
+                                        <div class="col-3">
+                                            <input type="number" placeholder="" style="width: 100px;" class="form-control" v-model="numfood">
+                                        </div>
+
+                                    </div>
+                                    <!-- ----------------------------------------------- -->
+                                    <div class="row" style="margin: auto;margin-bottom: 20px;">
+                                        <div class="col-4" style="font-size: 18px;margin-top: 3px;">
+                                            ข้อความถึงผู้ขาย
+                                        </div>
+                                        <div class="col-3">
+                                            <input type="text" placeholder="" style="width: 200px;" class="form-control" v-model="msg">
+                                        </div>
+
+                                    </div>
+
+                                    <!-- ---------------------------------------------------- -->
+                                    <div class="row" style="margin: auto;">
+                                        <div class="col-4" style="font-size: 20px;margin-top: 3px;">
+                                            เวลาที่จะมารับ
+                                        </div>
+                                        <div class="col-3">
+                                            <input type="text" placeholder="00" style="width: 100px;" class="form-control" v-model="hr">
+                                        </div>
+                                        <div class="col-1" style="font-size: 20px;">
+                                            :
+                                        </div>
+                                        <div class="col-3" style="margin-left: -10px;">
+                                            <input type="text" style="width: 100px;" placeholder="00" class="form-control" v-model="min">
+                                        </div>
+                                    </div>
+                                    <div v-if="error">
+                                        Error : please input number and input time or input number of items
+                                    </div>
+                                    <!-- {{msgtop}} -->
+                                    <br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                    <button type="button" class="btn btn-primary" @click="newReservation()">สั่งอาหาร</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--------------------------------------- Model end -->
+
+                </div>
+            </div>
+            <!-- endRow -->
+
+            <h1 style="margin-top: 60px;margin-bottom: 70px;text-align: center; ">---- Comment ร้าน ----</h1>
+
+            <!-- ------------------------start commernt------------------------------------------- -->
+            <div class="container">
+                <div class="form-group ">
+                    <label for="exampleFormControlTextarea1 "><h4>สิ่งที่อยากจะ Comment ร้าน</h4></label>
+                    <textarea class="form-control " id="exampleFormControlTextarea1 " rows="3 " v-model="review" required></textarea>
+                    <button type="submit " class="btn btn-secondary btn-lg btn-block " style="margin-bottom: 60px;margin-top:20px; " v-on:click="addUser()">Comment</button>
+                </div>
+                <div class="row my-3 ">
+                    <div class="col-12 " v-for="comment in info5.data" style="margin-bottom:20px;" v-if="comment.name == getshopname">
+
+                        <div class="card " style="margin-left:40px;margin-right: 40px; ">
+                            <div class="card-body " style="margin-left:20px;margin-right: 50px; ">
+                                <p class="card-text ">
+                                    User : {{comment.customer}}
+                                    <h3 class="text-muted ">{{ }}</h3><br>
+
+                                    <small class="text-muted ">Comment &nbsp: &nbsp&nbsp{{  comment.review}}</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ------------------------start commernt------------------------------------------- -->
+
+        </div>
+
+
+        <div v-if="load == false" style="margin-top: 150px;">
+            <!--lodingggggggggggggggggggggggggggggggg -->
+            <div class="loader loader--style2" title="1" style="text-align: center;">
+
+                <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="400px" height="400px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+          <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+            <animateTransform attributeType="xml"
+              attributeName="transform"
+              type="rotate"
+              from="0 25 25"
+              to="360 25 25"
+              dur="0.6s"
+              repeatCount="indefinite"/>
+            </path>
+          </svg>
+                <h1 style="font-size: 600%;"> Loading </h1>
+            </div>
+            <!--lodingggggggggggggggggggggggggggggggg -->
+        </div>
+
+    </div>
+
+
+
+
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js "></script>
+    <script>
+        var app = new Vue({
+            el: "#app1 ",
+            data: {
+
+                info: "xxx ",
+                info2: "xxx ",
+                info3: "xxx ",
+                info5: "xxx ",
+                time: "",
+                getowner: localStorage.getowner,
+                customerx: localStorage.loguser,
+                nameShopx: localStorage.getuser,
+                review: "",
+                getshopname: localStorage.getuser,
+                getloguser: localStorage.loguser,
+                hr: "",
+                min: "",
+                error: false,
+                numfood: 0,
+                msg: "",
+                idreservation: "",
+                pp: "",
+                msgtop: "",
+                load: false,
+                starthr: "",
+
+            },
+
+            async mounted() {
+
+                try {
+                    if (localStorage.role == "shop") {
+                        window.location.href = 'manushop.html';
+                    }
+                } catch {}
+
+                try {
+                    let response1 = await axios
+                        .get('https://zuul01.appspot.com/shop/shops')
+                    this.info2 = response1
+                } catch (err) {
+                    (console.log(err))
+                }
+                try {
+                    let response2 = await axios
+                        .get('https://zuul01.appspot.com/product/products/all')
+                    this.info3 = response2
+                } catch (err) {
+                    (console.log(err))
+                }
+                try {
+                    let response4 = await axios
+                        .get('https://zuul01.appspot.com/comment/comment', {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                    this.info5 = response4;
+                } catch (err) {
+                    (console.log(err))
+                    window.location.href = 'login.html';
+                }
+                this.load = true;
+
+
+            },
+            methods: {
+
+                addUser() {
+
+                    if (this.review != "") {
+                        axios.post('https://zuul01.appspot.com/comment/comment', {
+
+                                customer: this.customerx,
+                                name: this.nameShopx,
+                                review: this.review
+
+                            }, {
+                                headers: {
+                                    Authorization: localStorage.token1
+                                }
+                            })
+                            .then((response) => {
+                                console.log(response);
+                                const data = response.data;
+                                location.reload();
+                                review: "";
+
+                            });
+                    }
+                },
+
+                newReservation() {
+                    const today = new Date();
+                    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                    this.time = today.getHours() + ":" + today.getMinutes();
+                    if (today.getMinutes() < 10) {
+                        time = today.getHours() + ":0" + today.getMinutes();
+                    }
+                    if (today.getHours() < 10) {
+                        this.time = "0" + today.getHours() + ":" + today.getMinutes();
+                        if (today.getMinutes() < 10) {
+                            this.time = "0" + today.getHours() + ":0" + today.getMinutes();
+                        }
+                    }
+
+                    const dateTime = date + ' ' + this.time;
+                    pang = this.min;
+                    // ----------------------------------pang
+                    startpang = parseInt(pang) + 15;
+                    this.starthr = parseInt(this.hr);
+                    if (parseInt(pang) >= 45) {
+                        this.starthr = parseInt(this.hr) + 1;
+                        startpang = pang - 45;
+                    }
+                    if (this.starthr >= 24) {
+                        this.starthr = 0
+                    }
+
+
+                    // ----------------------pang
+                    this.pp = pang.toString().length;
+                    if (this.pp == 1) {
+                        pang = "0" + this.min
+                    }
+                    this.pp = this.hr.toString().length;
+                    if (this.pp == 1) {
+                        this.hr = "0" + this.hr
+                    }
+
+                    this.pp = startpang.toString().length;
+                    if (this.pp == 1) {
+                        startpang = "0" + startpang;
+                    }
+
+                    this.pp = this.starthr.toString().length;
+                    if (this.pp == 1) {
+                        this.starthr = "0" + this.starthr;
+                    }
+                    if (this.starthr >= 24) {
+                        this.starthr == 0
+                    }
+
+
+
+
+
+                    this.error = false;
+                    if (this.hr >= 45) {
+                        this.hr
+                    }
+                    this.msgtop = "sssssssssssssssssssx"
+                        // --------------error-----------------------
+                    try {
+                        this.msgtop = "sssssssssssssssssssx"
+                        if (parseInt(pang) < 60 && parseInt(this.hr) < 24 && parseInt(this.hr) >= today.getHours() && parseInt(this.numfood) >= 1) {
+                            this.msgtop = "sssssssssssssssssssc"
+                            if (parseInt(this.hr) == today.getHours()) {
+                                this.msgtop = "sssssssssssssssssss"
+                                if (parseInt(pang) < today.getMinutes()) {
+                                    this.error = true;
+                                }
+                            }
+                        } else {
+                            this.msgtop = "sssssgggggggssssssssssss"
+                            this.error = true;
+                        }
+
+                    } catch (err) {
+                        this.msgtop = "ssskkkkkkkkkkkkkkkks"
+                        this.error = true;
+                    }
+
+                    if (this.error == false) {
+                        try {
+                            axios.post('https://comment02-service.appspot.com/reservation/new', {
+                                    items: [{
+                                        itemId: this.idreservation,
+                                        amount: this.numfood
+                                    }],
+                                    timePeriod: {
+                                        startDateTime: date + " " + this.hr + ":" + pang,
+                                        endDateTime: date + " " + this.starthr + ":" + startpang
+                                    },
+                                    message: this.msg
+
+                                }, {
+                                    headers: {
+                                        Authorization: localStorage.token1
+                                    }
+                                })
+                                .then((response) => {
+                                    console.log(response);
+                                    const data = response.data;
+                                    this.error = false
+                                    location.reload();
+                                });
+
+                        } catch (err) {
+                            (console.log(err))
+                        }
+
+                    }
+
+
+
+
+                },
+                sendId(itemmanu_id) {
+                    this.idreservation = itemmanu_id;
+                },
+
+
+
+                logOut() {
+                    this.submitting = true;
+                    axios.get('https://zuul01.appspot.com/auth/logoutall', {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            window.location.href = 'login.html';
+                            localStorage.loguser = "";
+                        });
+                },
+            },
+            // end Mothods--------------------------------
+
+
+        });
+    </script>
+</body>
+
+</html>
