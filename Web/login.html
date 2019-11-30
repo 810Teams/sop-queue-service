@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>Login V2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+
+</head>
+
+<body>
+
+    <div class="bodyx" id="app1">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-form validate-form">
+                    <span class="login100-form-title ">
+						Login
+					</span>
+                    <span style="padding-bottom: 60px;display: block;">
+						<!-- <i class="zmdi zmdi-font" class="login100-form-title "></i> -->
+					</span>
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="email" placeholder="Username" v-model="newUser" required>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+
+                        <input class="input100" type="password" name="pass" placeholder="password" v-model="password" required>
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="container">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" @click="addUser">
+								Login
+							</button>
+                        </div>
+                    </div>
+                    <div class="text-center" style="padding-top: 90px;">
+                        <span style="text-align: center; margin-left: 37px;">
+							Don’t have an account?
+						</span>
+                        <a class="txt2" href="register.html">
+							Sign Up
+						</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="dropDownSelect1"></div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app1',
+            data() {
+                return {
+                    users: [],
+                    loading: false,
+                    submitting: false,
+                    newUser: '',
+                    password: '',
+                    token1: 'xxxxxx',
+                    loguser: ' ',
+                    test: ' ',
+                    role: '',
+                }
+            },
+            async mounted() {
+
+                if (localStorage.token1) this.token1 = localStorage.token1;
+
+            },
+            methods: {
+                fetchUsers() {
+                    this.loading = true;
+                    this.users = [];
+
+                    axios.get('https://jsonplaceholder.typicode.com/users')
+                        .then((response) => {
+                            const data = response.data;
+                            this.users = data;
+                            this.loading = false;
+                        });
+                },
+                addUser() {
+                    this.submitting = true;
+                    axios.post('https://auth-service-258809.appspot.com/login', {
+                            username: this.newUser,
+                            password: this.password,
+
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            const data = response.data;
+                            this.token1 = 'Bearer ' + data.token;
+                            this.loguser = data.user.username;
+                            this.test = data.user
+                            this.role = data.user.role
+                            localStorage.loguser = this.loguser;
+                            localStorage.token1 = this.token1;
+                            localStorage.role = this.role;
+                            this.users.push(data);
+                            this.newUser = '';
+                            this.submitting = false;
+                            if (this.role == "shop") {
+                                window.location.href = 'manushop.html'
+                            } else {
+                                window.location.href = 'box.html'
+                            }
+                        });
+                }
+            }
+        })
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+
+
+<body>
+    <div id="app1">
+
+
+        <!-------------------------------------EndNavbar------------------------------------  -->
+        <nav class="navbar navbar-light bg-light">
+            <a href="box.html" class="navbar-brand mb-0 h1">
+                <!-- <img src="sop.png" width="80" height="80" class="d-inline-block align-top" alt=""> -->
+                <h1 style="margin-left: 20%;">SOP_PROJECT</h1>
+            </a>
+            <h1 style="margin-left: 30%;">User: {{ myuser }}</h1>
+            <button class="btn btn-outline-dark" @click="logOut()"> Logout</button>
+        </nav>
+
+        <div v-if="load">
+            <!-------------------------------------EndNavbar------------------------------------  -->
+            <div class="container">
+                <br />
+                <br />
+                <h1 style="text-align: center;">--- ของที่เราได้จองไว้ ---</h1>
+                <!-- reservation --strat--------------------------------------------------- -->
+                <div class="row">
+                    <div class="col">
+                        <!-- start loop -->
+                        <div class="card" v-for="reservation in info4.data" v-if="reservation.userId == myuser" style="margin-bottom: 5px;">
+                            <!-- loop product start -->
+                            <div class="card-body" style="margin-left: 50px;">
+                                <!-- ----------------------------------------------------------------------- -->
+                                <h3 class="card-text ">
+                                    <div v-for="product in info3.data">
+                                        <div v-for="item in product.items">
+                                            <h6 class=" card-title" v-if="item._id == reservation.items[0].itemId">
+                                                <div v-for="shop in info2.data">
+                                                    <h4 v-if="shop.owner  == product.owner">
+                                                        ร้านที่ได้จองไว้ : {{shop.shopname}}
+                                                    </h4>
+                                                </div>
+
+                                                ของที่จองไว้ : &nbsp{{ item.name }} <br> เวลาที่ต้องไปเอา : {{reservation.timePeriod.startDateTime}} <br> ถึงเวลา :&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp{{reservation.timePeriod.endDateTime}}<br><br>                                                รหัส : {{reservation.id}}<br> สถานะปัจจุบัน :&nbsp{{reservation.status}}
+                                                <span class="badge badge-success ml-5 close" style="margin-right: 50px;margin-top: -50px;" @click="cancelReservation(reservation.id)">ยกเลิก </span>
+
+                                            </h6>
+                                        </div>
+                                </h3>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- --------loop product--------------------- -->
+                    </div>
+                    <!-- end loop -->
+                </div>
+
+
+
+
+
+
+
+
+
+                <!-- reservation --end--------------------------------------------------- -->
+
+                <h1 style="margin-top: 50px;margin-bottom: 50px;text-align: center; ">Shop ทั้งหมด</h1>
+
+
+                <div class="container">
+                    <div class="row my-3 ">
+                        <div class="col-md-6 mb-2 " v-for="(txt, index) in info2.data" :key="index">
+                            <div class="card ">
+                                <div class="card-body ">
+                                    <button class="close ">
+                              <a href="manuuser.html " v-on:click="getowner(txt.owner, txt.shopname)" > ดูเมนู</a>
+                               
+                                </button>
+                                    <p class="card-text ">
+                                        Shop :
+                                        <small class="text-muted ">{{ txt.shopname }}</small><br>
+                                        <!-- <small class="text-muted ">Create By: {{ txt.createBy }}</small> -->
+
+                                        <small class="text-muted ">รายละเอียดร้าน &nbsp: &nbsp&nbsp{{txt.description }}</small><br>
+                                        <!-- ------------------------------------------------- -->
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="margin-top: 150px;"></div>
+
+                </div>
+
+            </div>
+
+
+            <div v-if="load == false" style="margin-top: 150px;">
+                <!--lodingggggggggggggggggggggggggggggggg -->
+                <div class="loader loader--style2" title="1" style="text-align: center;">
+
+                    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="400px" height="400px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+              <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+                <animateTransform attributeType="xml"
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 25 25"
+                  to="360 25 25"
+                  dur="0.6s"
+                  repeatCount="indefinite"/>
+                </path>
+              </svg>
+                    <h1 style="font-size: 600%;"> Loading </h1>
+                </div>
+                <!--lodingggggggggggggggggggggggggggggggg -->
+            </div>
+
+        </div>
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: "#app1 ",
+            data: {
+
+                myuser: localStorage.loguser,
+                info: "xxx",
+                info4: "xxx",
+                info2: "xxx",
+                info3: "xxx",
+                load: false
+
+            },
+
+            async mounted() {
+                try {
+                    if (localStorage.role == "shop") {
+                        window.location.href = 'manushop.html';
+                    }
+                } catch {}
+                try {
+                    let response1 = await axios
+                        .get('https://zuul01.appspot.com/shop/shops')
+                    this.info2 = response1
+                } catch (err) {
+                    (console.log(err))
+                }
+                try {
+                    let response2 = await axios
+                        .get('https://zuul01.appspot.com/product/products/all')
+                    this.info3 = response2
+                } catch (err) {
+                    (console.log(err))
+                }
+                try {
+                    let response3 = await axios.get('https://comment02-service.appspot.com/reservation/all', {
+                        headers: {
+                            Authorization: localStorage.token1
+                        }
+                    })
+                    this.info4 = response3
+
+                } catch (err) {
+                    (console.log(err))
+                }
+                this.load = true
+
+
+            },
+            // -----------------end Methods--------------------------------
+            methods: {
+                logOut() {
+                    this.submitting = true;
+                    axios.get('https://zuul01.appspot.com/auth/logoutall', {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            localStorage.clear();
+                            window.location.href = 'login.html'
+                        });
+
+
+                },
+                addUser() {
+                    this.submitting = true;
+                    axios.post('https://auth-service-258809.appspot.com/login', {
+                            username: this.newUser,
+                            password: this.password,
+
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            const data = response.data;
+                            this.token1 = 'Bearer ' + data.token;
+                            this.loguser = data.user.username;
+                            this.test = data.user
+                            localStorage.loguser = this.loguser;
+
+                            localStorage.token1 = this.token1;
+                            this.users.push(data);
+                            this.newUser = '';
+                            this.submitting = false;
+                        });
+                },
+                getowner(txt, user) {
+                    localStorage.getowner = txt;
+                    localStorage.getuser = user;
+                },
+                cancelReservation(id) {
+                    axios.post('https://comment02-service.appspot.com/reservation/id/' + id + "/cancel ", {}, {
+                            headers: {
+                                Authorization: localStorage.token1
+                            }
+                        })
+                        .then((response) => {
+                            console.log(response);
+                            location.reload();
+                        });
+                },
+
+            },
+
+
+
+
+
+        });
+    </script>
+</body>
+
+</html>
